@@ -140,6 +140,18 @@ body.modal-open{overflow:hidden}
 
 /* ---------- sticky nav ---------- */
 #topnav{position:sticky;top:0;z-index:50;background:var(--iron);box-shadow:0 2px 8px rgba(27,29,31,.25)}
+
+/* ---------- mini sticky progress (docks under nav) ---------- */
+#mini-progress{position:sticky;top:44px;z-index:49;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 6px rgba(27,29,31,.08)}
+.mp-inner{display:flex;align-items:center;gap:14px;padding:8px 20px;min-height:28px}
+.mp-label{font-family:'Barlow Condensed';font-weight:600;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:#5c6468;white-space:nowrap}
+.mp-track{flex:1;height:9px;background:var(--stoop-lt);border-radius:5px;overflow:hidden;min-width:60px}
+.mp-fill{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--brick),var(--brick-dk));border-radius:5px;transition:width .3s ease}
+.mp-pct{font-family:'Bitter',serif;font-weight:800;font-size:16px;color:var(--brick);white-space:nowrap}
+.mp-count{font-size:12.5px;color:#5c6468;white-space:nowrap}
+.mp-phase{margin-left:auto;font-family:'Barlow Condensed';font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--iron);background:var(--stoop-lt);padding:4px 10px;border-radius:3px;white-space:nowrap;max-width:38vw;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:640px){.mp-phase{display:none}.mp-count{display:none}}
+@media (prefers-reduced-motion: reduce){ .mp-fill{transition:none} }
 .nav-inner{display:flex;align-items:center;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-top:0;padding-bottom:0}
 .nav-inner a{font-family:'Barlow Condensed';font-size:13.5px;letter-spacing:.09em;text-transform:uppercase;color:#cfd5d8;text-decoration:none;padding:12px 13px;white-space:nowrap;border-bottom:3px solid transparent}
 .nav-inner a:hover{color:#fff}
@@ -147,7 +159,7 @@ body.modal-open{overflow:hidden}
 .nav-inner .divider{width:1px;height:18px;background:rgba(255,255,255,.25);margin:0 6px;flex:none}
 .nav-inner a.chip{font-size:12px;padding:12px 8px;color:#a8b1b5}
 .nav-inner a.chip.active{color:#fff;border-bottom-color:var(--stoop)}
-section,.progress-block,.phase{scroll-margin-top:64px}
+section,.progress-block,.phase{scroll-margin-top:96px}
 #tools-anchor{scroll-margin-top:64px}
 .backtop{position:fixed;right:18px;bottom:18px;z-index:40;background:var(--brick);color:#fff;border:none;border-radius:4px;font-family:'Barlow Condensed';font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:10px 14px;cursor:pointer;box-shadow:0 3px 10px rgba(27,29,31,.3);opacity:0;pointer-events:none;transition:opacity .25s}
 .backtop.show{opacity:1;pointer-events:auto}
@@ -173,7 +185,7 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
 @media print{
   @page{margin:14mm 12mm}
   body{background:#fff;font-size:11.5px}
-  #topnav,.backtop,.expand-btn,.tbl-modal,.print-btn{display:none}
+  #topnav,#mini-progress,.backtop,.expand-btn,.tbl-modal,.print-btn{display:none}
   header{background:var(--iron)!important;color:#fff;padding-top:16px}
   h1,h1 em{color:#fff}
   h1 em{color:#e4b8ad!important}
@@ -226,6 +238,16 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
     <a class="chip" href="#p5" data-spy="p5">P5 Close</a>
   </div>
 </nav>
+
+<div id="mini-progress" aria-label="Reading progress, always visible">
+  <div class="wrap mp-inner">
+    <span class="mp-label">Progress</span>
+    <div class="mp-track"><span class="mp-fill" id="mp-fill"></span></div>
+    <span class="mp-pct" id="mp-pct">0%</span>
+    <span class="mp-count" id="mp-count">(0 of 0)</span>
+    <span class="mp-phase" id="mp-phase">Overview</span>
+  </div>
+</div>
 
 <div class="wrap">
 
@@ -480,6 +502,10 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
       if(c) c.textContent = d.length + ' / ' + b.length;
     });
   }
+  var mpFill = document.getElementById('mp-fill');
+  var mpPct = document.getElementById('mp-pct');
+  var mpCount = document.getElementById('mp-count');
+
   function update(){
     var done = boxes.filter(function(b){return b.checked}).length;
     var p = boxes.length ? Math.round(done/boxes.length*100) : 0;
@@ -489,6 +515,9 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
     doneCount.textContent = done;
     boxes.forEach(function(b){ b.closest('li').classList.toggle('done', b.checked); });
     phaseCounts();
+    if (mpFill){ mpFill.style.width = p + '%'; }
+    if (mpPct){ mpPct.textContent = p + '%'; }
+    if (mpCount){ mpCount.textContent = '(' + done + ' of ' + boxes.length + ')'; }
   }
   boxes.forEach(function(b){ b.addEventListener('change', update); });
   update();
@@ -533,14 +562,33 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
     cap.appendChild(b);
   });
 
+  // ---- keep the mini progress bar docked exactly under the sticky nav ----
+  var topnavEl = document.getElementById('topnav');
+  var miniEl = document.getElementById('mini-progress');
+  function positionMini(){
+    if (!topnavEl || !miniEl) return;
+    miniEl.style.top = topnavEl.offsetHeight + 'px';
+  }
+  positionMini();
+  window.addEventListener('resize', positionMini);
+
   // scrollspy
   var links = Array.prototype.slice.call(document.querySelectorAll('#topnav a[data-spy]'));
   var targets = links.map(function(a){ return document.getElementById(a.getAttribute('data-spy')); }).filter(Boolean);
+  var mpPhase = document.getElementById('mp-phase');
   function spy(){
-    var y = window.scrollY + 90;
-    var current = null;
+    var offset = (topnavEl ? topnavEl.offsetHeight : 44) + (miniEl ? miniEl.offsetHeight : 36) + 14;
+    var y = window.scrollY + offset;
+    var current = null, currentLink = null;
     targets.forEach(function(t){ if (t.offsetTop <= y) current = t.id; });
-    links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-spy') === current); });
+    links.forEach(function(a){
+      var isActive = a.getAttribute('data-spy') === current;
+      a.classList.toggle('active', isActive);
+      if (isActive) currentLink = a;
+    });
+    if (mpPhase){
+      mpPhase.textContent = currentLink ? currentLink.textContent.trim() : 'Overview';
+    }
   }
   window.addEventListener('scroll', spy, {passive:true});
   window.addEventListener('resize', spy);
