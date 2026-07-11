@@ -180,13 +180,48 @@ section,.progress-block,.phase{scroll-margin-top:96px}
 .nav-export:hover{background:var(--brick-dk)!important;color:#fff!important}
 .nav-export svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;vertical-align:-2px;margin-right:2px}
 
+
+
+/* ---------- photo gallery ---------- */
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.photo-item{position:relative;border:none;padding:0;background:none;cursor:pointer;border-radius:6px;overflow:hidden;aspect-ratio:3/4;box-shadow:0 1px 4px rgba(27,29,31,.15)}
+.photo-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s ease}
+.photo-item:hover img,.photo-item:focus-visible img{transform:scale(1.06)}
+.photo-item:focus-visible{outline:3px solid var(--brick);outline-offset:2px}
+.photo-cap{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(27,29,31,.88));color:#fff;font-family:'Barlow Condensed';font-size:12px;letter-spacing:.03em;line-height:1.25;padding:14px 8px 7px;text-align:left}
+
+.lightbox{position:fixed;inset:0;z-index:110;display:none;align-items:center;justify-content:center}
+.lightbox.open{display:flex}
+.lightbox .lb-backdrop{position:absolute;inset:0;background:rgba(10,11,12,.92)}
+.lightbox .lb-panel{position:relative;max-width:94vw;max-height:94vh;display:flex;flex-direction:column;z-index:1}
+.lightbox .lb-frame{overflow:auto;max-height:78vh;max-width:94vw;border-radius:4px;background:#000;touch-action:pan-x pan-y}
+.lightbox .lb-frame img{display:block;max-width:94vw;max-height:78vh;width:auto;height:auto;margin:auto;cursor:zoom-in}
+.lightbox .lb-frame.zoomed{cursor:grab}
+.lightbox .lb-frame.zoomed img{max-width:none;max-height:none;height:190vh;width:auto;cursor:zoom-out}
+.lightbox .lb-cap{color:#fff;font-family:'Barlow Condensed';font-size:15px;letter-spacing:.04em;text-align:center;padding:12px 10px 4px}
+.lightbox .lb-hint{color:#9aa2a6;font-size:11.5px;text-align:center;padding-bottom:2px}
+.lightbox .lb-close{position:absolute;top:-6px;right:-6px;background:var(--brick);color:#fff;border:none;width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.lightbox .lb-close:hover{background:var(--brick-dk)}
+.lightbox .lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);color:#fff;border:none;width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center}
+.lightbox .lb-nav:hover{background:rgba(255,255,255,.25)}
+.lightbox .lb-prev{left:-8px}
+.lightbox .lb-next{right:-8px}
+@media(max-width:640px){
+  .lightbox .lb-nav{width:38px;height:38px;font-size:18px}
+  .lightbox .lb-prev{left:2px}
+  .lightbox .lb-next{right:2px}
+  .lightbox .lb-close{top:2px;right:2px}
+}
+.lightbox .lb-count{color:#9aa2a6;font-size:12px;text-align:center;letter-spacing:.06em;font-family:'Barlow Condensed'}
+body.lightbox-open{overflow:hidden}
+
 footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(--line);padding-top:16px}
 
 /* ---------- print ---------- */
 @media print{
   @page{margin:14mm 12mm}
   body{background:#fff;font-size:11.5px}
-  #topnav,#mini-progress,.backtop,.expand-btn,.tbl-modal,.print-btn{display:none}
+  #topnav,#mini-progress,.backtop,.expand-btn,.tbl-modal,.print-btn,.lightbox{display:none}
   header{background:var(--iron)!important;color:#fff;padding-top:16px}
   h1,h1 em{color:#fff}
   h1 em{color:#e4b8ad!important}
@@ -230,6 +265,7 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
     <a href="#costs" data-spy="costs">Costs &amp; Fees</a>
     <a href="#tools-anchor" data-spy="tools-anchor">Tools</a>
     <a href="#compare" data-spy="compare">DIY vs Pro</a>
+    <a href="#photos" data-spy="photos">&#128247;&nbsp;Photos</a>
     <span class="divider" aria-hidden="true"></span>
     <a class="chip" href="#p0" data-spy="p0">P0 Permits</a>
     <a class="chip" href="#p1" data-spy="p1">P1 Base</a>
@@ -466,10 +502,45 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
     </div>
   </section>
 
+
+  <section id="photos">
+    <div class="sec-head"><span class="riser">Reference</span><h2>Site photos</h2></div>
+    <p class="sec-sub">Tap any photo to open it full-screen — tap again to zoom in for showing a contractor or a Home Depot associate exactly what you mean.</p>
+    <div class="photo-grid">
+      <button class="photo-item" data-index="0" aria-label="Open photo: Front — full flight closeup"><img src="images/thumb/stairs-front-full.jpg" alt="Front — full flight closeup" loading="lazy"><span class="photo-cap">Front — full flight closeup</span></button>
+      <button class="photo-item" data-index="1" aria-label="Open photo: Front — bottom step closeup"><img src="images/thumb/stairs-front-bottom-closeup.jpg" alt="Front — bottom step closeup" loading="lazy"><span class="photo-cap">Front — bottom step closeup</span></button>
+      <button class="photo-item" data-index="2" aria-label="Open photo: Left side — wide"><img src="images/thumb/stairs-left-wide.jpg" alt="Left side — wide" loading="lazy"><span class="photo-cap">Left side — wide</span></button>
+      <button class="photo-item" data-index="3" aria-label="Open photo: Left side — closeup"><img src="images/thumb/stairs-left-closeup.jpg" alt="Left side — closeup" loading="lazy"><span class="photo-cap">Left side — closeup</span></button>
+      <button class="photo-item" data-index="4" aria-label="Open photo: Right side — wide"><img src="images/thumb/stairs-right-wide.jpg" alt="Right side — wide" loading="lazy"><span class="photo-cap">Right side — wide</span></button>
+      <button class="photo-item" data-index="5" aria-label="Open photo: Right side — closeup 1"><img src="images/thumb/stairs-right-closeup-1.jpg" alt="Right side — closeup 1" loading="lazy"><span class="photo-cap">Right side — closeup 1</span></button>
+      <button class="photo-item" data-index="6" aria-label="Open photo: Right side — closeup 2"><img src="images/thumb/stairs-right-closeup-2.jpg" alt="Right side — closeup 2" loading="lazy"><span class="photo-cap">Right side — closeup 2</span></button>
+      <button class="photo-item" data-index="7" aria-label="Open photo: Right side — closeup 3"><img src="images/thumb/stairs-right-closeup-3.jpg" alt="Right side — closeup 3" loading="lazy"><span class="photo-cap">Right side — closeup 3</span></button>
+      <button class="photo-item" data-index="8" aria-label="Open photo: Right side — closeup 4 (top tread detail)"><img src="images/thumb/stairs-right-closeup-4.jpg" alt="Right side — closeup 4 (top tread detail)" loading="lazy"><span class="photo-cap">Right side — closeup 4 (top tread detail)</span></button>
+      <button class="photo-item" data-index="9" aria-label="Open photo: Riser width — 58⅛""><img src="images/thumb/riser-width-measurement.jpg" alt="Riser width — 58⅛"" loading="lazy"><span class="photo-cap">Riser width — 58⅛"</span></button>
+      <button class="photo-item" data-index="10" aria-label="Open photo: Riser height — 8" (1)"><img src="images/thumb/riser-height-measurement-1.jpg" alt="Riser height — 8" (1)" loading="lazy"><span class="photo-cap">Riser height — 8" (1)</span></button>
+      <button class="photo-item" data-index="11" aria-label="Open photo: Riser height — 8" (2)"><img src="images/thumb/riser-height-measurement-2.jpg" alt="Riser height — 8" (2)" loading="lazy"><span class="photo-cap">Riser height — 8" (2)</span></button>
+    </div>
+  </section>
+
   <footer>
     Prepared July 11, 2026 · Case CODE25-274813 · 148 Lark Street, Albany NY (three-family, c. 1890s)<br>
     City fees: Albany Building &amp; Zoning Permit Fee Chart (albanyny.gov). Labor: capital-region market ranges — handyman $50–125/hr, carpenter $30–100/hr, painters $30–120/hr. RRP: EPA Renovation, Repair &amp; Painting Rule. Estimates, not quotes; confirm fees with BRC at (518) 434-5995 and pricing with your suppliers.
   </footer>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <div class="lb-backdrop" data-lb-close></div>
+  <div class="lb-panel">
+    <button class="lb-close" data-lb-close aria-label="Close photo viewer">&#10005;</button>
+    <button class="lb-nav lb-prev" id="lb-prev" aria-label="Previous photo">&#10094;</button>
+    <button class="lb-nav lb-next" id="lb-next" aria-label="Next photo">&#10095;</button>
+    <div class="lb-frame" id="lb-frame">
+      <img id="lb-img" src="" alt="">
+    </div>
+    <div class="lb-cap" id="lb-cap"></div>
+    <div class="lb-count" id="lb-count"></div>
+    <div class="lb-hint">Tap photo to zoom &middot; arrow keys or swipe buttons to browse &middot; Esc to close</div>
+  </div>
 </div>
 
 <div class="tbl-modal" id="tbl-modal" role="dialog" aria-modal="true" aria-labelledby="tbl-modal-title">
@@ -523,6 +594,74 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
   boxes.forEach(function(b){ b.addEventListener('change', update); });
   update();
 
+
+
+  // ---- photo gallery lightbox ----
+  var PHOTOS = [
+    { full: "images/full/stairs-front-full.jpg", caption: "Front — full flight closeup" },
+    { full: "images/full/stairs-front-bottom-closeup.jpg", caption: "Front — bottom step closeup" },
+    { full: "images/full/stairs-left-wide.jpg", caption: "Left side — wide" },
+    { full: "images/full/stairs-left-closeup.jpg", caption: "Left side — closeup" },
+    { full: "images/full/stairs-right-wide.jpg", caption: "Right side — wide" },
+    { full: "images/full/stairs-right-closeup-1.jpg", caption: "Right side — closeup 1" },
+    { full: "images/full/stairs-right-closeup-2.jpg", caption: "Right side — closeup 2" },
+    { full: "images/full/stairs-right-closeup-3.jpg", caption: "Right side — closeup 3" },
+    { full: "images/full/stairs-right-closeup-4.jpg", caption: "Right side — closeup 4 (top tread detail)" },
+    { full: "images/full/riser-width-measurement.jpg", caption: "Riser width — 58⅛\"" },
+    { full: "images/full/riser-height-measurement-1.jpg", caption: "Riser height — 8\" (1)" },
+    { full: "images/full/riser-height-measurement-2.jpg", caption: "Riser height — 8\" (2)" }
+  ];
+  var lb = document.getElementById('lightbox');
+  var lbFrame = document.getElementById('lb-frame');
+  var lbImg = document.getElementById('lb-img');
+  var lbCap = document.getElementById('lb-cap');
+  var lbCount = document.getElementById('lb-count');
+  var lbIndex = 0;
+  var lbLastFocus = null;
+
+  function renderLb(){
+    var p = PHOTOS[lbIndex];
+    lbFrame.classList.remove('zoomed');
+    lbImg.src = p.full;
+    lbImg.alt = p.caption;
+    lbCap.textContent = p.caption;
+    lbCount.textContent = (lbIndex + 1) + ' / ' + PHOTOS.length;
+  }
+  function openLb(i){
+    lbLastFocus = document.activeElement;
+    lbIndex = i;
+    renderLb();
+    lb.classList.add('open');
+    document.body.classList.add('lightbox-open');
+    lb.querySelector('.lb-close').focus();
+  }
+  function closeLb(){
+    lb.classList.remove('open');
+    document.body.classList.remove('lightbox-open');
+    lbFrame.classList.remove('zoomed');
+    if (lbLastFocus) lbLastFocus.focus();
+  }
+  function nextLb(){ lbIndex = (lbIndex + 1) % PHOTOS.length; renderLb(); }
+  function prevLb(){ lbIndex = (lbIndex - 1 + PHOTOS.length) % PHOTOS.length; renderLb(); }
+
+  document.querySelectorAll('.photo-item').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      openLb(parseInt(btn.getAttribute('data-index'), 10));
+    });
+  });
+  lb.addEventListener('click', function(e){ if (e.target.hasAttribute('data-lb-close')) closeLb(); });
+  document.getElementById('lb-next').addEventListener('click', nextLb);
+  document.getElementById('lb-prev').addEventListener('click', prevLb);
+  lbImg.addEventListener('click', function(){
+    lbFrame.classList.toggle('zoomed');
+    lbFrame.scrollTop = 0; lbFrame.scrollLeft = 0;
+  });
+  document.addEventListener('keydown', function(e){
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    else if (e.key === 'ArrowRight') nextLb();
+    else if (e.key === 'ArrowLeft') prevLb();
+  });
 
   // ---- enlarge-table modal (all tables in the Costs & Fees section) ----
   var modal = document.getElementById('tbl-modal');
