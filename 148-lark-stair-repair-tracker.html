@@ -142,7 +142,8 @@ body.modal-open{overflow:hidden}
 #topnav{position:sticky;top:0;z-index:50;background:var(--iron);box-shadow:0 2px 8px rgba(27,29,31,.25)}
 
 /* ---------- mini sticky progress (docks under nav) ---------- */
-#mini-progress{position:sticky;top:44px;z-index:49;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 6px rgba(27,29,31,.08)}
+#mini-progress{position:fixed;left:0;right:0;top:44px;z-index:49;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 6px rgba(27,29,31,.08);transform:translateY(-100%);opacity:0;visibility:hidden;transition:transform .28s ease,opacity .28s ease,visibility .28s}
+#mini-progress.visible{transform:translateY(0);opacity:1;visibility:visible}
 .mp-inner{display:flex;align-items:center;gap:14px;padding:8px 20px;min-height:28px}
 .mp-label{font-family:'Barlow Condensed';font-weight:600;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:#5c6468;white-space:nowrap}
 .mp-track{flex:1;height:9px;background:var(--stoop-lt);border-radius:5px;overflow:hidden;min-width:60px}
@@ -239,7 +240,7 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
   </div>
 </nav>
 
-<div id="mini-progress" aria-label="Reading progress, always visible">
+<div id="mini-progress" aria-label="Project progress" aria-hidden="true">
   <div class="wrap mp-inner">
     <span class="mp-label">Progress</span>
     <div class="mp-track"><span class="mp-fill" id="mp-fill"></span></div>
@@ -571,6 +572,21 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
   }
   positionMini();
   window.addEventListener('resize', positionMini);
+
+  // reveal the mini bar only after the original progress card scrolls out of view
+  var progressCard = document.getElementById('progress');
+  function toggleMini(){
+    if (!miniEl || !progressCard || !topnavEl) return;
+    var navH = topnavEl.offsetHeight;
+    // bottom edge of the original card, relative to viewport
+    var cardBottom = progressCard.getBoundingClientRect().bottom;
+    var show = cardBottom <= navH;   // card has slid up under the nav
+    miniEl.classList.toggle('visible', show);
+    miniEl.setAttribute('aria-hidden', show ? 'false' : 'true');
+  }
+  window.addEventListener('scroll', toggleMini, {passive:true});
+  window.addEventListener('resize', toggleMini);
+  toggleMini();
 
   // scrollspy
   var links = Array.prototype.slice.call(document.querySelectorAll('#topnav a[data-spy]'));
