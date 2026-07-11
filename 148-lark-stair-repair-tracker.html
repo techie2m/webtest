@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>148 Lark St — Exterior Stair Repair Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;700;800&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --iron:#1b1d1f;        /* wrought-iron black */
+  --stoop:#8d979d;       /* weathered gray-blue paint */
+  --stoop-lt:#e7eaeb;
+  --brick:#96412f;       /* Lark St brick */
+  --brick-dk:#7c3526;
+  --moss:#6f7a45;        /* the moss you're scraping off */
+  --paper:#f4f4f2;
+  --card:#ffffff;
+  --line:#d5d9da;
+  --ok:#3e7a4e;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',system-ui,sans-serif;background:var(--paper);color:var(--iron);line-height:1.55;font-size:16px;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px 80px}
+
+/* ---------- header ---------- */
+header{background:var(--iron);color:#fff;padding:38px 0 0;position:relative;overflow:hidden}
+header .wrap{padding-bottom:0}
+.eyebrow{font-family:'Barlow Condensed';letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--stoop)}
+h1{font-family:'Bitter',serif;font-weight:800;font-size:clamp(28px,5vw,44px);line-height:1.08;margin:8px 0 6px}
+h1 em{font-style:normal;color:#e4b8ad}
+.case-row{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 26px}
+.badge{font-family:'Barlow Condensed';font-size:13px;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(255,255,255,.35);padding:5px 12px;border-radius:3px}
+.badge.alert{background:var(--brick);border-color:var(--brick)}
+/* stair-step silhouette along header bottom */
+.steps-edge{display:flex;align-items:flex-end;height:44px}
+.steps-edge span{flex:1;background:var(--paper)}
+.steps-edge span:nth-child(1){height:8px}.steps-edge span:nth-child(2){height:14px}
+.steps-edge span:nth-child(3){height:20px}.steps-edge span:nth-child(4){height:26px}
+.steps-edge span:nth-child(5){height:32px}.steps-edge span:nth-child(6){height:38px}
+.steps-edge span:nth-child(7){height:44px}
+
+/* ---------- progress ---------- */
+.progress-block{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:20px 22px;margin:-6px 0 34px;box-shadow:0 2px 10px rgba(27,29,31,.06)}
+.progress-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+.progress-top h2{font-family:'Bitter',serif;font-size:18px}
+#pct{font-family:'Bitter',serif;font-weight:800;font-size:28px;color:var(--brick)}
+.bar{height:14px;background:var(--stoop-lt);border-radius:7px;margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brick),var(--brick-dk));border-radius:7px;transition:width .35s ease}
+.note{font-size:13px;color:#5c6468;margin-top:10px}
+
+/* ---------- sections ---------- */
+section{margin:40px 0}
+.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:3px solid var(--iron);padding-bottom:8px;margin-bottom:18px}
+.riser{font-family:'Barlow Condensed';font-weight:600;font-size:13px;letter-spacing:.1em;color:#fff;background:var(--iron);padding:4px 10px;text-transform:uppercase}
+.sec-head h2{font-family:'Bitter',serif;font-size:24px;font-weight:700}
+.sec-sub{font-size:14px;color:#5c6468;margin:-10px 0 16px}
+
+/* ---------- checklist ---------- */
+.phase{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--stoop);border-radius:5px;padding:18px 20px;margin-bottom:16px}
+.phase.critical{border-left-color:var(--brick)}
+.phase h3{font-family:'Bitter',serif;font-size:17px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.phase h3 .count{font-family:'Barlow Condensed';font-size:13px;color:#5c6468;letter-spacing:.05em;white-space:nowrap}
+.phase p.why{font-size:13.5px;color:#5c6468;margin-bottom:12px}
+ul.todo{list-style:none}
+ul.todo li{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-top:1px dashed var(--line)}
+ul.todo li:first-child{border-top:none}
+ul.todo input[type=checkbox]{appearance:none;width:21px;height:21px;min-width:21px;border:2px solid var(--iron);border-radius:3px;cursor:pointer;position:relative;margin-top:2px;background:#fff}
+ul.todo input[type=checkbox]:checked{background:var(--ok);border-color:var(--ok)}
+ul.todo input[type=checkbox]:checked::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(42deg)}
+ul.todo input[type=checkbox]:focus-visible{outline:3px solid var(--brick);outline-offset:2px}
+ul.todo label{cursor:pointer;flex:1}
+ul.todo li.done label{color:#8a9296;text-decoration:line-through;text-decoration-color:var(--stoop)}
+.tag{font-family:'Barlow Condensed';font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:3px;white-space:nowrap;margin-top:3px}
+.tag.safety{background:#f6e3de;color:var(--brick-dk)}
+.tag.money{background:#e9ecdd;color:#55603a}
+.tag.city{background:var(--stoop-lt);color:#48545a}
+
+/* ---------- tables ---------- */
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:14.5px}
+caption{text-align:left;font-family:'Bitter',serif;font-weight:700;font-size:16px;padding-bottom:10px}
+th{font-family:'Barlow Condensed';font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:12.5px;text-align:left;background:var(--iron);color:#fff;padding:9px 12px}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr.subtotal td{font-weight:700;background:var(--stoop-lt)}
+tr.grand td{font-weight:800;background:var(--iron);color:#fff;font-size:15.5px}
+td.num,th.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+table.tools{table-layout:fixed}
+table.tools td,table.tools th{overflow-wrap:break-word}
+table.tools td.num,table.tools th.num{white-space:normal}
+table.tools td{font-size:13.5px}
+table.tools td.rent,table.tools th.rent{text-align:left;white-space:normal}
+table.tools td.num .val{white-space:nowrap}
+table.tools td.num .subnote{color:#5c6468;font-size:12px;white-space:nowrap}
+
+/* ---------- table expand / modal ---------- */
+caption{position:relative}
+.expand-btn{position:absolute;right:0;top:-2px;display:inline-flex;align-items:center;gap:6px;background:var(--stoop-lt);border:1px solid var(--line);border-radius:4px;color:#48545a;font-family:'Barlow Condensed';font-size:12px;letter-spacing:.07em;text-transform:uppercase;padding:4px 9px;cursor:pointer}
+.expand-btn:hover{background:var(--iron);color:#fff;border-color:var(--iron)}
+.expand-btn:focus-visible{outline:3px solid var(--brick);outline-offset:2px}
+.expand-btn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.tbl-modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:24px}
+.tbl-modal.open{display:flex}
+.tbl-modal .backdrop{position:absolute;inset:0;background:rgba(27,29,31,.72)}
+.tbl-modal .panel{position:relative;background:var(--card);border-radius:8px;max-width:min(1400px,96vw);max-height:92vh;width:96vw;display:flex;flex-direction:column;box-shadow:0 18px 60px rgba(0,0,0,.45)}
+.tbl-modal .panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px;border-bottom:3px solid var(--iron)}
+.tbl-modal .panel-head h3{font-family:'Bitter',serif;font-size:20px;color:var(--iron)}
+.tbl-modal .close-btn{background:var(--brick);border:none;color:#fff;border-radius:4px;font-family:'Barlow Condensed';font-size:14px;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;cursor:pointer}
+.tbl-modal .close-btn:hover{background:var(--brick-dk)}
+.tbl-modal .close-btn:focus-visible{outline:3px solid var(--iron);outline-offset:2px}
+.tbl-modal .panel-body{overflow:auto;padding:20px 22px}
+.tbl-modal .panel-body table{font-size:17px}
+.tbl-modal .panel-body table.tools td{font-size:16px}
+.tbl-modal .panel-body th{font-size:14px;padding:11px 14px}
+.tbl-modal .panel-body td{padding:11px 14px}
+.tbl-modal .panel-body caption{display:none}
+body.modal-open{overflow:hidden}
+.tbl-note{font-size:12.5px;color:#5c6468;margin:8px 0 0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:760px){.two-col{grid-template-columns:1fr}}
+
+/* ---------- callouts ---------- */
+.callout{border-radius:5px;padding:16px 18px;margin:18px 0;font-size:14.5px}
+.callout strong{font-family:'Bitter',serif}
+.callout.brick{background:#f6e7e3;border:1px solid #e0c0b7;border-left:6px solid var(--brick)}
+.callout.iron{background:var(--stoop-lt);border:1px solid var(--line);border-left:6px solid var(--iron)}
+
+/* comparison */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.vs>div{padding:20px}
+.vs .diy{background:var(--card)}
+.vs .pro{background:#fbf7f5;border-left:1px solid var(--line)}
+.vs h3{font-family:'Bitter',serif;font-size:18px;margin-bottom:2px}
+.vs .price{font-family:'Bitter',serif;font-weight:800;font-size:26px;color:var(--brick);margin-bottom:12px}
+.vs ul{list-style:none;font-size:14px}
+.vs li{padding:6px 0;border-top:1px dashed var(--line)}
+.vs li:first-child{border-top:none}
+.vs b{font-weight:600}
+@media(max-width:700px){.vs{grid-template-columns:1fr}.vs .pro{border-left:none;border-top:1px solid var(--line)}}
+
+/* ---------- sticky nav ---------- */
+#topnav{position:sticky;top:0;z-index:50;background:var(--iron);box-shadow:0 2px 8px rgba(27,29,31,.25)}
+.nav-inner{display:flex;align-items:center;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-top:0;padding-bottom:0}
+.nav-inner a{font-family:'Barlow Condensed';font-size:13.5px;letter-spacing:.09em;text-transform:uppercase;color:#cfd5d8;text-decoration:none;padding:12px 13px;white-space:nowrap;border-bottom:3px solid transparent}
+.nav-inner a:hover{color:#fff}
+.nav-inner a.active{color:#fff;border-bottom-color:var(--brick)}
+.nav-inner .divider{width:1px;height:18px;background:rgba(255,255,255,.25);margin:0 6px;flex:none}
+.nav-inner a.chip{font-size:12px;padding:12px 8px;color:#a8b1b5}
+.nav-inner a.chip.active{color:#fff;border-bottom-color:var(--stoop)}
+section,.progress-block,.phase{scroll-margin-top:64px}
+#tools-anchor{scroll-margin-top:64px}
+.backtop{position:fixed;right:18px;bottom:18px;z-index:40;background:var(--brick);color:#fff;border:none;border-radius:4px;font-family:'Barlow Condensed';font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:10px 14px;cursor:pointer;box-shadow:0 3px 10px rgba(27,29,31,.3);opacity:0;pointer-events:none;transition:opacity .25s}
+.backtop.show{opacity:1;pointer-events:auto}
+.backtop:focus-visible{outline:3px solid var(--iron);outline-offset:2px}
+
+.print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--iron);color:#fff;border:none;border-radius:4px;font-family:'Barlow Condensed';font-weight:600;font-size:14px;letter-spacing:.06em;text-transform:uppercase;padding:10px 16px;cursor:pointer;white-space:nowrap}
+.print-btn:hover{background:var(--brick)}
+.print-btn:focus-visible{outline:3px solid var(--brick);outline-offset:2px}
+.print-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.progress-top{gap:14px}
+
+.export-btn{position:fixed;right:18px;bottom:66px;z-index:41;background:var(--iron);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:4px;font-family:'Barlow Condensed';font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:10px 14px;cursor:pointer;box-shadow:0 3px 10px rgba(27,29,31,.3);display:inline-flex;align-items:center;gap:7px}
+.export-btn:hover{background:#000}
+.export-btn:focus-visible{outline:3px solid var(--brick);outline-offset:2px}
+.export-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav-export{display:inline-flex;align-items:center;gap:6px;background:var(--brick);color:#fff !important;border-radius:3px;margin-left:8px}
+.nav-export:hover{background:var(--brick-dk)!important;color:#fff!important}
+.nav-export svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;vertical-align:-2px;margin-right:2px}
+
+footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(--line);padding-top:16px}
+
+/* ---------- print ---------- */
+@media print{
+  @page{margin:14mm 12mm}
+  body{background:#fff;font-size:11.5px}
+  #topnav,.backtop,.expand-btn,.tbl-modal,.print-btn{display:none}
+  header{background:var(--iron)!important;color:#fff;padding-top:16px}
+  h1,h1 em{color:#fff}
+  h1 em{color:#e4b8ad!important}
+  .eyebrow{color:var(--stoop)!important}
+  .badge{border-color:rgba(255,255,255,.4);color:#fff}
+  .badge.alert{background:var(--brick)!important;border-color:var(--brick)}
+  .note{display:none}
+  .phase,.progress-block,table{box-shadow:none;break-inside:avoid}
+  .phase{page-break-inside:avoid}
+  section{margin:18px 0}
+  h2,.sec-head{page-break-after:avoid}
+  ul.todo li{page-break-inside:avoid}
+  ul.todo input[type=checkbox]{border-width:1.5px}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:100%}
+  table{font-size:10.5px}
+}
+@media (prefers-reduced-motion: reduce){ .bar i{transition:none} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Code Case CODE25-274813 · Three-Family · Built c. 1890s</div>
+    <h1>148 Lark Street<br><em>Exterior Stair Repair</em> — Project Tracker</h1>
+    <div class="case-row">
+      <span class="badge alert">Compliance date on notice: July 11, 2025 — call BRC</span>
+      <span class="badge">Albany BRC · (518) 434-5995</span>
+      <span class="badge">9 risers · 58⅛" × 8"</span>
+      <span class="badge">Treads 59¼" × 11½"</span>
+    </div>
+  </div>
+  <div class="steps-edge" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+</header>
+
+<nav id="topnav" aria-label="Section navigation">
+  <div class="wrap nav-inner">
+    <a href="#progress" data-spy="progress">Progress</a>
+    <a href="#checklist" data-spy="checklist">Checklist</a>
+    <a href="#costs" data-spy="costs">Costs &amp; Fees</a>
+    <a href="#tools-anchor" data-spy="tools-anchor">Tools</a>
+    <a href="#compare" data-spy="compare">DIY vs Pro</a>
+    <span class="divider" aria-hidden="true"></span>
+    <a class="chip" href="#p0" data-spy="p0">P0 Permits</a>
+    <a class="chip" href="#p1" data-spy="p1">P1 Base</a>
+    <a class="chip" href="#p2" data-spy="p2">P2 Cut</a>
+    <a class="chip" href="#p3" data-spy="p3">P3 Build</a>
+    <a class="chip" href="#p4" data-spy="p4">P4 Paint</a>
+    <a class="chip" href="#p5" data-spy="p5">P5 Close</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="progress-block" id="progress">
+    <div class="progress-top">
+      <h2>Overall progress</h2>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <span><span id="pct">0%</span> <span style="font-size:13px;color:#5c6468">(<span id="done-count">0</span> of <span id="total-count">0</span> tasks)</span></span>
+        <button class="print-btn" id="print-btn" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg>
+          Print / Save as PDF
+        </button>
+      </div>
+    </div>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar-outer"><i id="bar"></i></div>
+    <p class="note">Checkbox state lives in this open page only — it resets on reload. Click <b>Print / Save as PDF</b> above to snapshot your progress as a PDF that matches this page's look.</p>
+  </div>
+
+  <!-- ============ PHASE CHECKLISTS ============ -->
+  <section id="checklist">
+    <div class="sec-head"><span class="riser">Checklist</span><h2>Work phases, in order</h2></div>
+    <p class="sec-sub">Sequence matters: <b>level the base before cutting a single board.</b> Riser openings will shift when the sunken right stringer comes back up.</p>
+
+    <div class="phase critical" id="p0">
+      <h3>Phase 0 — Paperwork &amp; clock management <span class="count"></span></h3>
+      <p class="why">The violation notice date has passed. Everything in this phase is about getting good faith on record before an inspector drives by.</p>
+      <ul class="todo">
+        <li><input type="checkbox" id="t1"><label for="t1">Call BRC (518-434-5995), reference case <b>CODE25-274813</b>, state repair plan, and request an extension in writing</label><span class="tag city">City</span></li>
+        <li><input type="checkbox" id="t2"><label for="t2">Confirm fee classification: verbal quote was $125 misc for minor repair; official schedule says <b>$400</b> for 3+ unit alteration ≤ $5,000 — ask which applies to full scope</label><span class="tag money">$125–400</span></li>
+        <li><input type="checkbox" id="t3"><label for="t3">File General Building Permit with the repair-in-kind scope paragraph (permit desk: 200 Henry Johnson Blvd, Suite 1)</label><span class="tag city">City</span></li>
+        <li><input type="checkbox" id="t4"><label for="t4">Ask whether a Sidewalk/Barricade permit is required — <b>$50</b> with a building permit — since the stoop meets the Lark St sidewalk</label><span class="tag money">$50</span></li>
+        <li><input type="checkbox" id="t5"><label for="t5">Verify whether 148 Lark falls in a historic/overlay district (exterior paint in historic districts needs review) — ask BRC while on the phone</label><span class="tag city">Verify</span></li>
+        <li><input type="checkbox" id="t6"><label for="t6">Request 2 quotes from EPA RRP-certified contractors as a live fallback (verify at epa.gov firm lookup)</label></li>
+        <li><input type="checkbox" id="t7"><label for="t7">Wait for permit issuance before starting — early start risks a $300 Stop Work Order; review runs ~7–10 business days</label><span class="tag city">City</span></li>
+      </ul>
+    </div>
+
+    <div class="phase critical" id="p1">
+      <h3>Phase 1 — Relevel the base <span class="count"></span></h3>
+      <p class="why">Root cause. The right stringer has sunk into dirt on brick rubble; the loose risers are the symptom.</p>
+      <ul class="todo">
+        <li><input type="checkbox" id="t8"><label for="t8">Excavate under the sunken right side; remove brick rubble and loose fill</label></li>
+        <li><input type="checkbox" id="t9"><label for="t9">Compact paver-base gravel; set solid 4×8×16 concrete blocks as footing pads</label></li>
+        <li><input type="checkbox" id="t10"><label for="t10">Jack the right stringer to level on cribbing — <b>slowly, small lifts</b>, checking the 4' level across treads</label><span class="tag safety">Safety</span></li>
+        <li><input type="checkbox" id="t11"><label for="t11">Shim between blocks and stringer; confirm full bearing, no rocking</label></li>
+        <li><input type="checkbox" id="t12"><label for="t12">Probe stringers with a screwdriver (bottom 2 ft especially) — soft wood = stop and reassess before buying lumber</label><span class="tag safety">Go/No-go</span></li>
+        <li><input type="checkbox" id="t13"><label for="t13">Re-check riser height uniformity top to bottom (max ⅜" variance between tallest and shortest)</label><span class="tag city">Code</span></li>
+      </ul>
+    </div>
+
+    <div class="phase" id="p2">
+      <h3>Phase 2 — Measure, buy, cut <span class="count"></span></h3>
+      <p class="why">Only after the frame is level. Openings on a racked stair are never uniform.</p>
+      <ul class="todo">
+        <li><input type="checkbox" id="t14"><label for="t14">Pull one riser; confirm board height (8") and check for a center stringer behind it</label></li>
+        <li><input type="checkbox" id="t15"><label for="t15">Measure all 9 riser openings individually; write dimensions on painter's tape at each step</label></li>
+        <li><input type="checkbox" id="t16"><label for="t16">Lumber run: 5× 1x10 × 12' KDAT (each yields two 58⅛" risers), 5/4×12 bullnose tread stock, PT 2x8 for cleats</label><span class="tag money">~$280–350</span></li>
+        <li><input type="checkbox" id="t17"><label for="t17">Buy fasteners, adhesive, jack, blocks, paint system, lead-safe supplies per materials list</label><span class="tag money">~$470–550</span></li>
+        <li><input type="checkbox" id="t18"><label for="t18">Rip risers to 8"; cut to measured lengths; cut bottom tread to 59¼" (keep the ~½" side overhang the old treads show)</label></li>
+        <li><input type="checkbox" id="t19"><label for="t19">Prime all six sides of every cut piece — especially end grain — before installation</label></li>
+      </ul>
+    </div>
+
+    <div class="phase" id="p3">
+      <h3>Phase 3 — Carpentry <span class="count"></span></h3>
+      <ul class="todo">
+        <li><input type="checkbox" id="t20"><label for="t20">Remove old risers one at a time, top step down; add PT cleats wherever the old nailing surface is chewed up</label></li>
+        <li><input type="checkbox" id="t21"><label for="t21">Install new risers: PL Premium bead + two rows of 2½" structural screws into solid wood</label></li>
+        <li><input type="checkbox" id="t22"><label for="t22">Install missing bottom tread; replace any treads that failed the screwdriver probe (3" screws + adhesive)</label></li>
+        <li><input type="checkbox" id="t23"><label for="t23">Confirm center-stringer bearing under all treads; block as needed so nothing bounces mid-span</label></li>
+        <li><input type="checkbox" id="t24"><label for="t24">Re-seat any loose railing base plates while steps are open; caulk all tread/riser joints</label></li>
+      </ul>
+    </div>
+
+    <div class="phase critical" id="p4">
+      <h3>Phase 4 — Lead-safe scrape &amp; paint <span class="count"></span></h3>
+      <p class="why">Pre-1978 rental: RRP practices apply even to owner-performed work. Albany County lead enforcement is aggressive — chips in the soil beside a public sidewalk are the expensive mistake.</p>
+      <ul class="todo">
+        <li><input type="checkbox" id="t25"><label for="t25">Lay 6-mil poly ground containment, taped and weighted, extending past the stoop footprint</label><span class="tag safety">RRP</span></li>
+        <li><input type="checkbox" id="t26"><label for="t26">Suit up: P100 respirator, coveralls; mist surfaces and <b>wet-scrape only</b> — no dry power sanding</label><span class="tag safety">RRP</span></li>
+        <li><input type="checkbox" id="t27"><label for="t27">Fold containment inward, double-bag debris, seal with tape; wipe down tools</label><span class="tag safety">RRP</span></li>
+        <li><input type="checkbox" id="t28"><label for="t28">Dispose of bagged debris properly (household DIY waste is accepted at regular disposal in most of NY — confirm with Albany DGS)</label></li>
+        <li><input type="checkbox" id="t29"><label for="t29">Prime everything with peel-bonding primer (dry day, 50°F+)</label></li>
+        <li><input type="checkbox" id="t30"><label for="t30">Two coats porch &amp; floor enamel; stir anti-slip additive into tread coats; 24 hr dry between coats, no rain</label></li>
+      </ul>
+    </div>
+
+    <div class="phase" id="p5">
+      <h3>Phase 5 — Close out the violation <span class="count"></span></h3>
+      <ul class="todo">
+        <li><input type="checkbox" id="t31"><label for="t31">Photograph the finished stairs from the same angles as the violation photos</label></li>
+        <li><input type="checkbox" id="t32"><label for="t32">Schedule the compliance/final inspection with BRC; reference the case number</label><span class="tag city">City</span></li>
+        <li><input type="checkbox" id="t33"><label for="t33">Be present or reachable at inspection ($100 fee if nobody's available or work isn't ready)</label><span class="tag money">Avoid $100</span></li>
+        <li><input type="checkbox" id="t34"><label for="t34">Get written confirmation the case is closed; file it with permit, receipts, and photos</label></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ COSTS ============ -->
+  <section id="costs">
+    <div class="sec-head"><span class="riser">Verified</span><h2>Albany-area costs &amp; fees</h2></div>
+    <p class="sec-sub">City fees below are from Albany's published fee chart. Labor figures are current capital-region market ranges — your quotes are the final word.</p>
+
+    <div class="callout brick">
+      <strong>Fee correction worth knowing:</strong> a three-family is billed under Albany's <b>commercial</b> schedule ("residential structures with 3 or more units"). Alterations up to $5,000 in cost = <b>$400 flat</b> — not the $100 that applies to 1–2 family homes. The $125 misc figure from your BRC call likely reflects the minor 2–4 step repair scope; the full Option 2 scope probably prices at $400. Budget $450 with the sidewalk permit and treat anything less as good news.
+    </div>
+
+    <table>
+      <caption>City of Albany fees (published schedule)</caption>
+      <thead><tr><th>Item</th><th>Applies when</th><th class="num">Fee</th></tr></thead>
+      <tbody>
+        <tr><td>Building permit — alteration, 3+ unit building, job ≤ $5,000</td><td>Full Option 2 scope</td><td class="num">$400</td></tr>
+        <tr><td>Misc/minor repair fee (per BRC verbal quote)</td><td>If they classify it as minor 2–4 step repair</td><td class="num">$125</td></tr>
+        <tr><td>Sidewalk/Barricade permit (with building permit)</td><td>If tools/materials occupy the sidewalk</td><td class="num">$50</td></tr>
+        <tr><td>Missed/failed inspection re-fee</td><td>Avoidable</td><td class="num">$100</td></tr>
+        <tr><td>Stop Work Order for starting early</td><td>Avoidable — wait for issuance</td><td class="num">$300</td></tr>
+        <tr><td>Permit renewal (if work runs past 1 year)</td><td>Unlikely here</td><td class="num">50% of original</td></tr>
+      </tbody>
+    </table>
+
+    <div style="height:26px"></div>
+
+    <table>
+      <caption>DIY budget — materials &amp; supplies (58⅛" × 8" risers, 9 steps)</caption>
+      <thead><tr><th>Item</th><th>Spec / qty</th><th class="num">Est. cost</th></tr></thead>
+      <tbody>
+        <tr><td>Riser stock</td><td>5× 1x10 × 12' KDAT (two 58⅛" pieces each = 9 + 1 spare)</td><td class="num">$160–200</td></tr>
+        <tr><td>Bottom tread + 2 contingency</td><td>5/4×12 KDAT bullnose, cut to 59¼"</td><td class="num">$105–135</td></tr>
+        <tr><td>Cleat/blocking stock</td><td>1× PT 2x8 × 8'</td><td class="num">$15</td></tr>
+        <tr><td>Base &amp; leveling</td><td>Bottle jack, 4 solid blocks, gravel, shims</td><td class="num">$85–100</td></tr>
+        <tr><td>Fasteners &amp; adhesive</td><td>GRK/SPAX screws, PL Premium, PU caulk</td><td class="num">$55–65</td></tr>
+        <tr><td>Paint system</td><td>Peel-bond primer, 2 gal porch enamel, anti-slip, applicators</td><td class="num">$160–180</td></tr>
+        <tr><td>Lead-safe supplies</td><td>6-mil poly, carbide scraper, sprayer, P100, bags</td><td class="num">$130–140</td></tr>
+        <tr class="subtotal"><td colspan="2">Materials subtotal</td><td class="num">$710–835</td></tr>
+        <tr><td>Permit (see fee table)</td><td>$125 if minor classification honored; $400 + $50 sidewalk if not</td><td class="num">$125–450</td></tr>
+        <tr><td>Debris disposal</td><td>Bagged lead-paint scrapings</td><td class="num">$25–50</td></tr>
+        <tr><td>Tool gaps (if needed)</td><td>Circular saw, drill, 4' level</td><td class="num">$0–165</td></tr>
+        <tr class="grand"><td colspan="2">DIY total out-of-pocket</td><td class="num">$860 – $1,500</td></tr>
+      </tbody>
+    </table>
+    <p class="tbl-note">Your labor: 3–4 working days. Weather rules the paint days — enamel wants 50°F+ and 24 dry hours.</p>
+
+    <div style="height:26px"></div>
+
+    <table>
+      <caption>Contractor estimate — Albany capital-region rates</caption>
+      <thead><tr><th>Component</th><th>Basis</th><th class="num">Est. range</th></tr></thead>
+      <tbody>
+        <tr><td>Carpentry: relevel stringer, 9 risers, 1–3 treads</td><td>12–18 hrs @ $60–90/hr (area carpenter/skilled-handyman rate: $50–100/hr)</td><td class="num">$900–1,600</td></tr>
+        <tr><td>Lead-safe scrape, prime, 2 coats</td><td>10–16 hrs @ $50–90/hr + RRP containment/verification overhead ($150–400 on a job this size)</td><td class="num">$800–1,800</td></tr>
+        <tr><td>Materials + 15–20% contractor markup</td><td>Same list, marked up</td><td class="num">$850–1,050</td></tr>
+        <tr><td>Permits + admin</td><td>$450 city fees + handling</td><td class="num">$475–550</td></tr>
+        <tr><td>Debris disposal (regulated)</td><td>Containment, transport, fees</td><td class="num">$75–150</td></tr>
+        <tr class="grand"><td colspan="2">Contractor total, turnkey</td><td class="num">$3,100 – $5,150</td></tr>
+      </tbody>
+    </table>
+    <p class="tbl-note">A solo handyman quietly skipping RRP practices might quote $2,000–2,500 — on a pre-1978 three-family, that discount is your liability (EPA penalties run to ~$49,772/violation/day). Only accept quotes from EPA RRP-certified firms and ask for the certification number.</p>
+
+    <div style="height:26px"></div>
+
+    <div id="tools-anchor"></div>
+    <table class="tools">
+      <colgroup><col style="width:15%"><col style="width:25%"><col style="width:13%"><col style="width:26%"><col style="width:21%"></colgroup>
+      <caption>Tool list — buy vs. rent (Home Depot / Lowe's, Albany area)</caption>
+      <thead><tr><th>Tool</th><th>Used for</th><th class="num">Buy (HD/Lowe's)</th><th class="rent">Rent</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Circular saw, 7¼"</td><td>Ripping 1x10s to 8", cutting risers/treads to length</td><td class="num">$60–110</td><td class="rent">$17 / 4 hr · $24–35 / day</td><td><b>Buy</b> — you have window &amp; brick phases coming</td></tr>
+        <tr><td>Drill/driver, 18V kit</td><td>All screw-down work, pilot holes</td><td class="num">$79–129</td><td class="rent">$15 / 4 hr · $21 / day</td><td><b>Buy</b> — the landlord tool you'll use forever</td></tr>
+        <tr><td>6-ton bottle jack</td><td>Lifting the sunken right stringer</td><td class="num">$35–50</td><td class="rent">Not stocked at HD/Lowe's rental desks — auto-parts loaner programs lend free w/ refundable deposit</td><td><b>Buy or borrow</b></td></tr>
+        <tr><td>Level, 4-ft</td><td>The whole Phase 1 releveling operation</td><td class="num">$25–45</td><td class="rent">Not rented</td><td><b>Buy</b> — non-negotiable for this job</td></tr>
+        <tr><td>Pry bar + flat bar set</td><td>Riser/tread demo without wrecking stringers</td><td class="num">$20–35</td><td class="rent">Not rented</td><td><b>Buy</b></td></tr>
+        <tr><td>Speed square + 25' tape</td><td>Square cuts, measuring the 9 openings</td><td class="num">$15–25</td><td class="rent">Not rented</td><td><b>Buy</b></td></tr>
+        <tr><td>Caulk gun</td><td>PL Premium + PU caulk</td><td class="num">$8–15</td><td class="rent">Not rented</td><td><b>Buy</b></td></tr>
+        <tr><td>Sawhorses (pair)</td><td>Cut station on the sidewalk side</td><td class="num">$40–60</td><td class="rent">Not rented</td><td><b>Buy</b> (or knock together from 2x4 scrap)</td></tr>
+        <tr><td>Bar clamps (2)</td><td>Holding risers tight while screwing off</td><td class="num">$20–35</td><td class="rent">Not rented</td><td><b>Buy</b></td></tr>
+        <tr><td>Hand tamper + shovel</td><td>Compacting the gravel footing base</td><td class="num">$45–65</td><td class="rent">Not rented (plate compactor rentable but overkill)</td><td><b>Buy</b></td></tr>
+        <tr><td>HEPA dust vacuum</td><td>RRP cleanup after wet-scraping</td><td class="num"><span class="val">$150–300</span><br><span class="subnote">(true HEPA)</span></td><td class="rent">$18 / 4 hr · $38 / day</td><td><b>Rent</b> — clear win; one day covers cleanup</td></tr>
+        <tr><td>Table saw <i>(optional)</i></td><td>Cleaner 8" rips than circ saw + guide</td><td class="num">$300+</td><td class="rent">$40–60 / day</td><td><b>Skip or rent</b> — circ saw + clamped straightedge is fine</td></tr>
+        <tr class="subtotal"><td colspan="2">Buy-everything path (owns tools after)</td><td class="num">$350–560</td><td class="num">—</td><td></td></tr>
+        <tr class="subtotal"><td colspan="2">Hybrid path: rent saw + drill (2 days) + HEPA vac (1 day), buy the rest</td><td class="num"><span class="val">$210–330</span><br><span class="subnote">bought</span></td><td class="rent">+ $110–150 rented</td><td></td></tr>
+      </tbody>
+    </table>
+    <p class="tbl-note">Rental mechanics at Home Depot: 4-hour, daily, weekly, and 4-week tiers; credit-card hold plus deposit at pickup; late returns bill extra days; saw rentals include <i>a</i> blade but not a sharp one — budget $8–14 for a fresh 7¼" blade either way. Rule of thumb from HD's own guidance: rent if you'll use a tool fewer than 3–4 times. Given your renovation pipeline on this building (windows, brick work), the buy column wins on the saw and drill; the HEPA vac is the one clear rental.</p>
+  </section>
+
+  <!-- ============ COMPARISON ============ -->
+  <section id="compare">
+    <div class="sec-head"><span class="riser">Decision</span><h2>DIY vs. contractor</h2></div>
+    <div class="vs">
+      <div class="diy">
+        <h3>Do it yourself</h3>
+        <div class="price">$860 – $1,500</div>
+        <ul>
+          <li><b>Time:</b> 3–4 working days of your labor + permit/shopping runs</li>
+          <li><b>Starts:</b> as soon as the permit issues (~7–10 business days)</li>
+          <li><b>Lead:</b> RRP practices are on you — owner-landlords on rentals aren't exempt</li>
+          <li><b>Risk point:</b> the jacking/leveling step; everything after is honest carpentry</li>
+          <li><b>Best when:</b> BRC grants the extension and the stringers probe sound</li>
+        </ul>
+      </div>
+      <div class="pro">
+        <h3>RRP-certified contractor</h3>
+        <div class="price">$3,100 – $5,150</div>
+        <ul>
+          <li><b>Time:</b> a few hours coordinating; 2–4 weeks realistic to completion</li>
+          <li><b>Savings forgone:</b> roughly $2,200–3,700</li>
+          <li><b>Lead:</b> certified firm carries compliance, documentation, disposal</li>
+          <li><b>Bonus:</b> a professional eye on the sunken stringer before commitment</li>
+          <li><b>Best when:</b> the clock is tight, or demo reveals rot beyond shimming</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout iron">
+      <strong>Recommended path — hybrid:</strong> file the permit and do the base/leveling work yourself now, while collecting two RRP-certified quotes in parallel. Quotes are free, they're a live fallback if the stringer is worse than it looks, and together with the filed permit and receipts they give BRC every reason to extend the compliance date.
+    </div>
+  </section>
+
+  <footer>
+    Prepared July 11, 2026 · Case CODE25-274813 · 148 Lark Street, Albany NY (three-family, c. 1890s)<br>
+    City fees: Albany Building &amp; Zoning Permit Fee Chart (albanyny.gov). Labor: capital-region market ranges — handyman $50–125/hr, carpenter $30–100/hr, painters $30–120/hr. RRP: EPA Renovation, Repair &amp; Painting Rule. Estimates, not quotes; confirm fees with BRC at (518) 434-5995 and pricing with your suppliers.
+  </footer>
+</div>
+
+<div class="tbl-modal" id="tbl-modal" role="dialog" aria-modal="true" aria-labelledby="tbl-modal-title">
+  <div class="backdrop" data-close></div>
+  <div class="panel">
+    <div class="panel-head">
+      <h3 id="tbl-modal-title">Table</h3>
+      <button class="close-btn" data-close>&#10005; Close</button>
+    </div>
+    <div class="panel-body" id="tbl-modal-body"></div>
+  </div>
+</div>
+
+<button class="backtop" id="backtop" aria-label="Back to top">&#8593; Top</button>
+
+<script>
+(function(){
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('ul.todo input[type=checkbox]'));
+  var bar = document.getElementById('bar');
+  var barOuter = document.getElementById('bar-outer');
+  var pct = document.getElementById('pct');
+  var doneCount = document.getElementById('done-count');
+  var totalCount = document.getElementById('total-count');
+  totalCount.textContent = boxes.length;
+
+  function phaseCounts(){
+    document.querySelectorAll('.phase').forEach(function(ph){
+      var b = ph.querySelectorAll('input[type=checkbox]');
+      var d = ph.querySelectorAll('input[type=checkbox]:checked');
+      var c = ph.querySelector('.count');
+      if(c) c.textContent = d.length + ' / ' + b.length;
+    });
+  }
+  function update(){
+    var done = boxes.filter(function(b){return b.checked}).length;
+    var p = boxes.length ? Math.round(done/boxes.length*100) : 0;
+    bar.style.width = p + '%';
+    barOuter.setAttribute('aria-valuenow', p);
+    pct.textContent = p + '%';
+    doneCount.textContent = done;
+    boxes.forEach(function(b){ b.closest('li').classList.toggle('done', b.checked); });
+    phaseCounts();
+  }
+  boxes.forEach(function(b){ b.addEventListener('change', update); });
+  update();
+
+
+  // ---- enlarge-table modal (all tables in the Costs & Fees section) ----
+  var modal = document.getElementById('tbl-modal');
+  var modalBody = document.getElementById('tbl-modal-body');
+  var modalTitle = document.getElementById('tbl-modal-title');
+  var lastFocus = null;
+
+  function openModal(table){
+    lastFocus = document.activeElement;
+    var cap = table.querySelector('caption');
+    modalTitle.textContent = cap ? cap.textContent.replace(/\s*Enlarge\s*$/i,'').trim() : 'Table';
+    modalBody.innerHTML = '';
+    modalBody.appendChild(table.cloneNode(true));
+    var btn = modalBody.querySelector('.expand-btn');
+    if (btn) btn.remove();
+    modal.classList.add('open');
+    document.body.classList.add('modal-open');
+    modal.querySelector('.close-btn').focus();
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    modalBody.innerHTML = '';
+    if (lastFocus) lastFocus.focus();
+  }
+  modal.addEventListener('click', function(e){ if (e.target.hasAttribute('data-close')) closeModal(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+  document.querySelectorAll('#costs table').forEach(function(table){
+    var cap = table.querySelector('caption');
+    if (!cap) return;
+    var b = document.createElement('button');
+    b.className = 'expand-btn';
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Enlarge table: ' + cap.textContent.trim());
+    b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg> Enlarge';
+    b.addEventListener('click', function(){ openModal(table); });
+    cap.appendChild(b);
+  });
+
+  // scrollspy
+  var links = Array.prototype.slice.call(document.querySelectorAll('#topnav a[data-spy]'));
+  var targets = links.map(function(a){ return document.getElementById(a.getAttribute('data-spy')); }).filter(Boolean);
+  function spy(){
+    var y = window.scrollY + 90;
+    var current = null;
+    targets.forEach(function(t){ if (t.offsetTop <= y) current = t.id; });
+    links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-spy') === current); });
+  }
+  window.addEventListener('scroll', spy, {passive:true});
+  window.addEventListener('resize', spy);
+  spy();
+
+  // back to top
+  var printBtn = document.getElementById('print-btn');
+  if (printBtn) printBtn.addEventListener('click', function(){ window.print(); });
+
+  var btn = document.getElementById('backtop');
+  window.addEventListener('scroll', function(){
+    btn.classList.toggle('show', window.scrollY > 500);
+  }, {passive:true});
+  btn.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+})();
+</script>
+</body>
+</html>
