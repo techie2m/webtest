@@ -310,13 +310,15 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
 
     <div class="phase critical" id="p0">
       <h3>Phase 0 — Paperwork &amp; clock management <span class="count"></span></h3>
-      <p class="why">The violation notice date has passed. Everything in this phase is about getting good faith on record before an inspector drives by.</p>
+      <p class="why">The violation notice date has passed, and the permit is filed online. Everything in this phase is about getting good faith on record and having every attachment ready before you submit.</p>
       <ul class="todo">
         <li><input type="checkbox" id="t1"><label for="t1">Call BRC (518-434-5995), reference case <b>CODE25-274813</b>, state repair plan, and request an extension in writing</label><span class="tag city">City</span></li>
-        <li><input type="checkbox" id="t2"><label for="t2">Confirm fee classification: verbal quote was $125 misc for minor repair; official schedule says <b>$400</b> for 3+ unit alteration ≤ $5,000 — ask which applies to full scope</label><span class="tag money">$125–400</span></li>
-        <li><input type="checkbox" id="t3"><label for="t3">File General Building Permit with the repair-in-kind scope paragraph (permit desk: 200 Henry Johnson Blvd, Suite 1)</label><span class="tag city">City</span></li>
-        <li><input type="checkbox" id="t4"><label for="t4">Ask whether a Sidewalk/Barricade permit is required — <b>$50</b> with a building permit — since the stoop meets the Lark St sidewalk</label><span class="tag money">$50</span></li>
-        <li><input type="checkbox" id="t5"><label for="t5">Verify whether 148 Lark falls in a historic/overlay district (exterior paint in historic districts needs review) — ask BRC while on the phone</label><span class="tag city">Verify</span></li>
+        <li><input type="checkbox" id="t2a"><label for="t2a">Fee — Option A: <b>$120</b> confirmed misc/minor-repair fee (replacing two steps/risers)</label><span class="tag money">$120 · confirmed</span></li>
+        <li><input type="checkbox" id="t2b"><label for="t2b">Fee — Option B: <b>$400</b> official schedule fee, if the application gets classified as a full 3+ unit alteration instead</label><span class="tag money">$400 · if full scope</span></li>
+        <li><input type="checkbox" id="tphoto"><label for="tphoto">Photograph the specific riser/step being replaced for the "before" attachment — the Photos tab above already has these shots ready to reuse</label><span class="tag city">Permit attachment</span></li>
+        <li><input type="checkbox" id="tce200"><label for="tce200">Obtain a <b>CE-200</b> Certificate of Attestation of Exemption (workers' comp &amp; disability) — request the 1-year / 364-day version so it stays valid for the whole job</label><span class="tag city">Permit attachment</span></li>
+        <li><input type="checkbox" id="tcoa"><label for="tcoa">Obtain the <b>Certificate of Appropriateness (COA)</b> required for this exterior work</label><span class="tag city">Permit attachment</span></li>
+        <li><input type="checkbox" id="t3"><label for="t3">Submit the <b>Building Permit Application online</b>, attaching the CE-200, the COA, and the before photo, with the repair-in-kind scope paragraph</label><span class="tag city">City</span></li>
         <li><input type="checkbox" id="t6"><label for="t6">Request 2 quotes from EPA RRP-certified contractors as a live fallback (verify at epa.gov firm lookup)</label></li>
         <li><input type="checkbox" id="t7"><label for="t7">Wait for permit issuance before starting — early start risks a $300 Stop Work Order; review runs ~7–10 business days</label><span class="tag city">City</span></li>
       </ul>
@@ -389,16 +391,17 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
     <p class="sec-sub">City fees below are from Albany's published fee chart. Labor figures are current capital-region market ranges — your quotes are the final word.</p>
 
     <div class="callout brick">
-      <strong>Fee correction worth knowing:</strong> a three-family is billed under Albany's <b>commercial</b> schedule ("residential structures with 3 or more units"). Alterations up to $5,000 in cost = <b>$400 flat</b> — not the $100 that applies to 1–2 family homes. The $125 misc figure from your BRC call likely reflects the minor 2–4 step repair scope; the full Option 2 scope probably prices at $400. Budget $450 with the sidewalk permit and treat anything less as good news.
+      <strong>Fee, confirmed:</strong> the online portal confirms <b>$120</b> as the misc/minor-repair fee for replacing two steps/risers — no Sidewalk/Barricade permit needed, per your follow-up with the city. The <b>$400</b> commercial-alteration fee ("residential structures with 3 or more units," jobs ≤ $5,000) only applies if the application ends up classified as a full alteration rather than a minor repair. The two fee lines in Phase 0 are there so you can check off whichever one the portal actually charges you.
     </div>
 
     <table>
       <caption>City of Albany fees (published schedule)</caption>
       <thead><tr><th>Item</th><th>Applies when</th><th class="num">Fee</th></tr></thead>
       <tbody>
-        <tr><td>Building permit — alteration, 3+ unit building, job ≤ $5,000</td><td>Full Option 2 scope</td><td class="num">$400</td></tr>
-        <tr><td>Misc/minor repair fee (per BRC verbal quote)</td><td>If they classify it as minor 2–4 step repair</td><td class="num">$125</td></tr>
-        <tr><td>Sidewalk/Barricade permit (with building permit)</td><td>If tools/materials occupy the sidewalk</td><td class="num">$50</td></tr>
+        <tr><td>Misc/minor repair fee — confirmed</td><td>Replacing two steps/risers (this project, as filed)</td><td class="num">$120</td></tr>
+        <tr><td>Building permit — alteration, 3+ unit building, job ≤ $5,000</td><td>Only if reclassified as full alteration</td><td class="num">$400</td></tr>
+        <tr><td>CE-200 Certificate of Attestation of Exemption</td><td>Required attachment (workers' comp / disability) — request the 364-day version</td><td class="num">$0</td></tr>
+        <tr><td>Certificate of Appropriateness (COA)</td><td>Required attachment for this exterior work</td><td class="num">$0</td></tr>
         <tr><td>Missed/failed inspection re-fee</td><td>Avoidable</td><td class="num">$100</td></tr>
         <tr><td>Stop Work Order for starting early</td><td>Avoidable — wait for issuance</td><td class="num">$300</td></tr>
         <tr><td>Permit renewal (if work runs past 1 year)</td><td>Unlikely here</td><td class="num">50% of original</td></tr>
@@ -419,10 +422,10 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
         <tr><td>Paint system</td><td>Peel-bond primer, 2 gal porch enamel, anti-slip, applicators</td><td class="num">$160–180</td></tr>
         <tr><td>Lead-safe supplies</td><td>6-mil poly, carbide scraper, sprayer, P100, bags</td><td class="num">$130–140</td></tr>
         <tr class="subtotal"><td colspan="2">Materials subtotal</td><td class="num">$710–835</td></tr>
-        <tr><td>Permit (see fee table)</td><td>$125 if minor classification honored; $400 + $50 sidewalk if not</td><td class="num">$125–450</td></tr>
+        <tr><td>Permit</td><td>$120 confirmed misc fee; $400 only if reclassified as full alteration</td><td class="num">$120–400</td></tr>
         <tr><td>Debris disposal</td><td>Bagged lead-paint scrapings</td><td class="num">$25–50</td></tr>
         <tr><td>Tool gaps (if needed)</td><td>Circular saw, drill, 4' level</td><td class="num">$0–165</td></tr>
-        <tr class="grand"><td colspan="2">DIY total out-of-pocket</td><td class="num">$860 – $1,500</td></tr>
+        <tr class="grand"><td colspan="2">DIY total out-of-pocket</td><td class="num">$855 – $1,450</td></tr>
       </tbody>
     </table>
     <p class="tbl-note">Your labor: 3–4 working days. Weather rules the paint days — enamel wants 50°F+ and 24 dry hours.</p>
@@ -436,9 +439,9 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
         <tr><td>Carpentry: relevel stringer, 9 risers, 1–3 treads</td><td>12–18 hrs @ $60–90/hr (area carpenter/skilled-handyman rate: $50–100/hr)</td><td class="num">$900–1,600</td></tr>
         <tr><td>Lead-safe scrape, prime, 2 coats</td><td>10–16 hrs @ $50–90/hr + RRP containment/verification overhead ($150–400 on a job this size)</td><td class="num">$800–1,800</td></tr>
         <tr><td>Materials + 15–20% contractor markup</td><td>Same list, marked up</td><td class="num">$850–1,050</td></tr>
-        <tr><td>Permits + admin</td><td>$450 city fees + handling</td><td class="num">$475–550</td></tr>
+        <tr><td>Permits + admin</td><td>$120–400 city fee (per confirmed fee table) + handling</td><td class="num">$420–500</td></tr>
         <tr><td>Debris disposal (regulated)</td><td>Containment, transport, fees</td><td class="num">$75–150</td></tr>
-        <tr class="grand"><td colspan="2">Contractor total, turnkey</td><td class="num">$3,100 – $5,150</td></tr>
+        <tr class="grand"><td colspan="2">Contractor total, turnkey</td><td class="num">$3,045 – $5,100</td></tr>
       </tbody>
     </table>
     <p class="tbl-note">A solo handyman quietly skipping RRP practices might quote $2,000–2,500 — on a pre-1978 three-family, that discount is your liability (EPA penalties run to ~$49,772/violation/day). Only accept quotes from EPA RRP-certified firms and ask for the certification number.</p>
@@ -476,7 +479,7 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
     <div class="vs">
       <div class="diy">
         <h3>Do it yourself</h3>
-        <div class="price">$860 – $1,500</div>
+        <div class="price">$855 – $1,450</div>
         <ul>
           <li><b>Time:</b> 3–4 working days of your labor + permit/shopping runs</li>
           <li><b>Starts:</b> as soon as the permit issues (~7–10 business days)</li>
@@ -487,10 +490,10 @@ footer{margin-top:60px;font-size:12.5px;color:#5c6468;border-top:1px solid var(-
       </div>
       <div class="pro">
         <h3>RRP-certified contractor</h3>
-        <div class="price">$3,100 – $5,150</div>
+        <div class="price">$3,045 – $5,100</div>
         <ul>
           <li><b>Time:</b> a few hours coordinating; 2–4 weeks realistic to completion</li>
-          <li><b>Savings forgone:</b> roughly $2,200–3,700</li>
+          <li><b>Savings forgone:</b> roughly $1,600–4,250</li>
           <li><b>Lead:</b> certified firm carries compliance, documentation, disposal</li>
           <li><b>Bonus:</b> a professional eye on the sunken stringer before commitment</li>
           <li><b>Best when:</b> the clock is tight, or demo reveals rot beyond shimming</li>
